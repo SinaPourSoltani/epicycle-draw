@@ -22,81 +22,14 @@
   </head>
   <body>
     <h4 id="num_circles_label"></h4>
-    <input type="range" id="frequencies" name="frequencies" min="1" max="100" value="10">
-    <script>
-        window.onload = function() {
-            canv = document.getElementById("display");
-            ctx = canv.getContext("2d");
-            setInterval(update, 1000/60);
-        }
-
-        t = 0.0;
-        wave_offset = 700;
-        wave = [];
-        point = {};
-
-        function draw_circles(num) {
-            offset_x = 350;
-            offset_y = 400;
-            x = 0;
-            y = 0;
-            ctx.strokeStyle="white";
-            for (let i = 0; i < num; i++) {
-                n = i * 2 + 1;
-                prev_x = x;
-                prev_y = y;
-                r = 100 * (4 / (n * Math.PI));
-
-                ctx.lineWidth = 0.2;
-                ctx.beginPath();
-                x += r * Math.cos(n*t);
-                y += r * Math.sin(n*t);
-                ctx.arc(offset_x + prev_x ,offset_y + prev_y, r, 0, 2*Math.PI);
-                ctx.stroke()
-
-                ctx.lineWidth = 2;
-                ctx.moveTo(offset_x + prev_x, offset_y + prev_y);
-                ctx.lineTo(offset_x + x, offset_y + y);
-                ctx.stroke();
-
-                point = {x: offset_x + x, y: offset_y + y}
-            }
-            wave.unshift(point);
-        }
-
-        function draw_wave() {
-            ctx.beginPath();
-            for (let i = 0; i < wave.length; i++) {
-                ctx.arc(wave_offset + i, wave[i].y, 0, 0, 0);
-            }
-            ctx.stroke()
-
-            for (let i = wave.length; i > 700; i--) {
-                wave.pop();
-            }
-        }
-
-        function draw_connecting_line() {
-            ctx.moveTo(point.x, point.y);
-            ctx.lineTo(wave_offset, wave[0].y);
-            ctx.stroke()
-        }
-
-        function update() {
-            ctx.fillStyle="black";
-            ctx.fillRect(0, 0, canv.width, canv.height);
-
-            num_circles = document.getElementById('frequencies').value
-
-            document.getElementById('num_circles_label').innerHTML = num_circles
-            draw_circles(num_circles);
-            draw_wave();
-            draw_connecting_line();
-
-
-            t -= 0.01;
-        }
-
-    </script>
+    <input type="range" id="frequencies" name="frequencies" min="1" max="100" value="9">
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+    <script src="./Point.js"></script>
+    <script src="./dft.js"></script>
+    <script src="./CircleStack.js"></script>
+    <script src="./PhasorStackView.js"></script>
+    <script src="./EpicycleDrawer.js"></script>
+    <script src="./script.js"></script>
+    <input type="file" id="fileInput" onchange=fileChange()>
   </body>
 </html>
